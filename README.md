@@ -45,20 +45,22 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/weaveworks/procspy"
+	"github.com/lunatik13/procspy"
 )
 
 func main() {
+	var tcpCloseWait uint = 8
 	lookupProcesses := true
-	cs, err := procspy.Connections(lookupProcesses)
+	var result string
+	cs, err := procspy.Connections(lookupProcesses, tcpCloseWait)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("TCP Connections:\n")
+	fmt.Println("TCP Connections:")
 	for c := cs.Next(); c != nil; c = cs.Next() {
-		fmt.Printf(" - %v\n", c)
+	    result =  result + fmt.Sprintf(" - %v\n", c)
 	}
+	fmt.Println(result)
 }
 ```
