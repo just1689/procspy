@@ -31,7 +31,7 @@ func (c *pnConnIter) Next() *Connection {
 }
 
 // cbConnections sets Connections()
-var cbConnections = func(processes bool) (ConnIter, error) {
+var cbConnections = func(processes bool, tcpState uint) (ConnIter, error) {
 	// buffer for contents of /proc/<pid>/net/tcp
 	buf := bufPool.Get().(*bytes.Buffer)
 	buf.Reset()
@@ -50,7 +50,7 @@ var cbConnections = func(processes bool) (ConnIter, error) {
 	}
 
 	return &pnConnIter{
-		pn:    NewProcNet(buf.Bytes(), tcpEstablished),
+		pn:    NewProcNet(buf.Bytes(), tcpState),
 		buf:   buf,
 		procs: procs,
 	}, nil
